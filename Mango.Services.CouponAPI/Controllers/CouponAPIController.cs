@@ -2,7 +2,6 @@
 using Mango.Services.CouponAPI.Data;
 using Mango.Services.CouponAPI.Model;
 using Mango.Services.CouponAPI.Model.Dto;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mango.Services.CouponAPI.Controllers
@@ -28,12 +27,12 @@ namespace Mango.Services.CouponAPI.Controllers
             try
             {
                 IEnumerable<Coupon> objList = _db.Coupons.ToList();
-               _response.Result = _mapper.Map<IEnumerable<CouponDto>>(objList);
+                _response.Result = _mapper.Map<IEnumerable<CouponDto>>(objList);
 
             }
             catch (Exception e)
             {
-                _response.IsSuccess = false; 
+                _response.IsSuccess = false;
                 _response.Message = e.Message;
             }
             return _response;
@@ -47,7 +46,7 @@ namespace Mango.Services.CouponAPI.Controllers
         {
             try
             {
-                Coupon obj = _db.Coupons.First(u=>u.CouponId==id);
+                Coupon obj = _db.Coupons.First(u => u.CouponId == id);
                 _response.Result = _mapper.Map<CouponDto>(obj);
             }
             catch (Exception e)
@@ -114,6 +113,7 @@ namespace Mango.Services.CouponAPI.Controllers
 
         }
         [HttpDelete]
+        [Route("{id:int}")]
         public ResponseDto Delete(int id)
         {
             try
