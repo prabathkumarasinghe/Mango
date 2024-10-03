@@ -22,6 +22,23 @@ namespace Mango.Services.AuthAPI.Services
             _jwtTokenGenerator = jwtTokenGenerator;
         }
 
+        public async Task<bool> AssignRole(string email, string roleName)
+        {
+            var user = _db.applicationUsers.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
+            if (user != null)
+            {
+                if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
+                {
+                    //create role if it does not exist
+                    _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
+                }
+                // await _userManager.AddToRoleAsync(user, roleName);
+                await _userManager.AddToRoleAsync(user, roleName);
+                return true;
+            }
+            return false;
+        }
+
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
             var user = _db.applicationUsers.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDto.Username.ToLower());
@@ -50,8 +67,8 @@ namespace Mango.Services.AuthAPI.Services
 
             LoginResponseDto loginResponseDto = new LoginResponseDto()
             {
-                //User = userDto,
-                Token = ""
+                User = userDto,
+                Token = token
             };
 
             return loginResponseDto;
