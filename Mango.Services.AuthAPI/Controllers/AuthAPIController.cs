@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Mango.Services.AuthAPI.Models.Dto;
 using Mango.Services.AuthAPI.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
